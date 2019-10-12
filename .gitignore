@@ -1,0 +1,7 @@
+*.txt
+*.pdf
+assignment4_tute_codes/
+a.out
+!report_q3.txt
+tmp
+previous_year_codes
