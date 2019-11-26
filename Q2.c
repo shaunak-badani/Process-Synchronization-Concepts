@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include<unistd.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
 
@@ -25,7 +25,7 @@ void biryani_ready(void* arg, int no_of_vessels_prepared);
 
 int rand_range(int low, int high) {
     if(low == high) return low;
-    return low + (rand()) % (high - low);
+    return low + (rand()) % (high - low + 1);
 }
 
 /* Student functions */
@@ -44,6 +44,7 @@ void* wait_for_slot(void* arg) {
     s* inp = (s*) arg;
     int i;
     int flag = 1;
+    
     while(flag) {
         for(i = 0 ; i < no_of_tables ; i++) {
             pthread_mutex_lock(&student_mutex);
@@ -147,6 +148,10 @@ void initializePipeline(int M, int ST, int N) {
     pthread_t robot_chef_ids[M];
     pthread_t serving_table_ids[ST];
     pthread_t student_ids[N];
+    
+    pthread_mutex_init(&robot_mutex, NULL);
+    pthread_mutex_init(&serving_table_mutex, NULL);
+    pthread_mutex_init(&student_mutex, NULL);
 
     for(int i = 0 ; i < M ; i++) {
         s* inp = (s*)malloc(sizeof(s));
@@ -183,7 +188,7 @@ void initializePipeline(int M, int ST, int N) {
 int main() {
     // no_of_tables = 6;
     // no_of_students = 500;
-    // no_of_chefs = 3;
+    // no_of_chefs =  3;
     printf("No of chefs :: No of tables :: No of students\n");
     scanf("%lld %lld %lld", &no_of_chefs, &no_of_tables, &no_of_students);
     initializePipeline(no_of_chefs,  no_of_tables, no_of_students);
